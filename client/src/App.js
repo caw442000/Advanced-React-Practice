@@ -1,11 +1,12 @@
-import React from 'react';
-import axios from 'axios';
+import React from "react";
+import { Component } from "react";
+import axios from "axios";
 
+import "./App.css";
+import PlayerCard from "./components/PlayerCard";
+import Nav from "./components/Nav.js";
 
-import './App.css';
-
-class App extends React.Component {
-
+class App extends Component {
   constructor() {
     super();
     this.state = {
@@ -13,30 +14,39 @@ class App extends React.Component {
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     axios
-    .get('http://localhost:5000/api/footballers')
-    .then(res => {
-      console.log(res.data)
-      this.setState({
-        players: res.data
+      .get("http://localhost:5000/api/footballers")
+      .then(res => {
+        console.log("footballers", res.data);
+        this.setState({ players: res.data });
+      })
+      .catch(error => {
+        console.log("This is an error", error);
       });
+  }
 
-
-    })
-    .catch(err=> console.log('This is an error', err));
-
-
-
-  } 
-  
-  render(){ 
+  render() {
     return (
-    <div className="App">
-      <h1>Happy building <span role="img" aria-label="Smiling emoji">😃</span></h1>
-    </div>
+      <div className="container">
+        <Nav />>
+        {this.state.players.map(player => (
+          <PlayerCard key={player.id} player={player} />
+        ))}
+      </div>
     );
   }
 }
 
 export default App;
+
+{
+  /* {this.state.players.map(player => (
+          <PlayerCard
+            key={player.id}
+            name={player.name}
+            rank={player.rank}
+            team={player.team}
+          />
+        ))} */
+}
